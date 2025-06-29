@@ -1,13 +1,16 @@
 package com.dontwait.shopapp.controller;
 
+import com.dontwait.shopapp.dto.request.category.CategoryCreationRequest;
+import com.dontwait.shopapp.dto.request.category.CategoryUpdateRequest;
 import com.dontwait.shopapp.dto.response.ApiResponse;
+import com.dontwait.shopapp.dto.response.CategoryResponse;
+import com.dontwait.shopapp.service.CategoryService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/categories")
@@ -15,11 +18,47 @@ import org.springframework.web.bind.annotation.RestController;
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class CategoryController {
 
+    CategoryService categoryService;
+
     @GetMapping
-    ApiResponse<String> getAllCategories(@RequestParam("page") int page,
-                                         @RequestParam("limit") int limit) {
-        return ApiResponse.<String>builder()
-                .result("This is a test response")
+    public ApiResponse<List<CategoryResponse>> getAllCategories() {
+        return ApiResponse.<List<CategoryResponse>>builder()
+                .result(categoryService.findAllCategories())
+                .message("Get all categories successfully")
                 .build();
     }
+
+    @GetMapping("{categoryId}")
+    public ApiResponse<CategoryResponse> findCategoryById(@PathVariable Integer categoryId) {
+        return ApiResponse.<CategoryResponse>builder()
+                .result(categoryService.findCategoryById(categoryId))
+                .message("Get category successfully")
+                .build();
+    }
+
+    @PostMapping
+    public ApiResponse<CategoryResponse> createCategory(@RequestBody CategoryCreationRequest request) {
+        return ApiResponse.<CategoryResponse>builder()
+                .result(categoryService.createCategory(request))
+                .message("Create category successfully")
+                .build();
+    }
+
+    @PutMapping("{categoryId}")
+    public ApiResponse<CategoryResponse> updateCategory(@PathVariable Integer categoryId, @RequestBody CategoryUpdateRequest request) {
+        return ApiResponse.<CategoryResponse>builder()
+                .result(categoryService.updateCategory(categoryId, request))
+                .message("Create category successfully")
+                .build();
+    }
+
+    @DeleteMapping("{categoryId}")
+    public ApiResponse<String> deleteCategory(@PathVariable Integer categoryId) {
+        categoryService.deleteCategory(categoryId);
+        return ApiResponse.<String>builder()
+                .message("Delete category successfully")
+                .build();
+    }
+
+
 }
