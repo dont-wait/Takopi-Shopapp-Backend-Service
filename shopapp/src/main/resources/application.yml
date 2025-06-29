@@ -1,3 +1,25 @@
 spring:
   application:
     name: shopapp
+  datasource:
+    url: ${DB_URL}
+    driver-class-name: ${DRIVER_NAME}
+    username: ${DB_USERNAME}
+    password: ${DB_PASS}
+    jpa:
+      properties:
+        hibernate.dialect: ${DIALECT}
+        show-sql: true
+      hibernate:
+        ddl-auto: update
+server:
+  port: ${PORT}
+  servlet:
+    context-path: /api/v1
+
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /api-ui.html
