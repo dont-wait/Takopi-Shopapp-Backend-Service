@@ -11,6 +11,9 @@ import com.dontwait.shopapp.service.ProductService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,8 +35,23 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductResponse> findAllProducts() {
-        return productRepository.findAll().stream()
+    public List<ProductResponse> findAllProducts(Pageable pageable, String keyword, Integer categoryId) {
+        Specification<Product> spec = Specification.where(null);
+
+        if(categoryId != null) {
+            spec = spec.and((root, query, cb)
+                    -> cb.equal(root.get("category")
+                    .get("id"), categoryId
+                    )
+            );
+        }
+
+        if(keyword != null && !keyword.isEmpty()) {
+            spec = spec.and((root, query, cb)
+                    -> cb.like(root.get("name"), "%" + keyword + "%"));
+        }
+
+        return productRepository.findAll(spec, pageable).stream()
                 .map(productMapper::toProductResponse)
                 .toList();
     }

@@ -6,6 +6,9 @@ import com.dontwait.shopapp.service.ProductService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,12 +28,17 @@ public class ProductController {
                 .build();
     }
     @GetMapping
-    public ApiResponse<List<ProductResponse>> findAll(@RequestParam(name = "page") Integer page,
-                                                      @RequestParam(name = "limit") Integer limit,
+    public ApiResponse<List<ProductResponse>> findAll(@RequestParam(name = "page", defaultValue = "0") Integer page,
+                                                      @RequestParam(name = "limit", defaultValue = "20") Integer limit,
+                                                      @RequestParam(name = "keyword", required = false) String keyword,
+                                                      @RequestParam(name = "categoryId", required = false) Integer categoryId,
                                                       @RequestParam(name = "sort", defaultValue = "name") String sort,
                                                       @RequestParam(name = "order", defaultValue = "asc") String order) {
+        Sort.Direction direction = order.equalsIgnoreCase(("asc")) ? Sort.Direction.ASC : Sort.Direction.DESC;
+        Pageable pageable = PageRequest.of(page, limit, Sort.by(direction, sort));
+
         return ApiResponse.<List<ProductResponse>>builder()
-                .result(productService.findAllProducts())
+                .result(productService.findAllProducts(pageable, keyword, categoryId))
                 .message("Get all products successfully")
                 .build();
     }
