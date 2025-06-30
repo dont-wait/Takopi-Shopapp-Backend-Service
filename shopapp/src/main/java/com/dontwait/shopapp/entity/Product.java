@@ -4,24 +4,32 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.util.List;
+import java.math.BigDecimal;
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
+@Table(name = "products")
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Table(name = "categories")
-public class Category {
+@Builder
+public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
-    @Column(name = "name", nullable = false, length = 100, unique = true)
+
+    @Column(name = "name", nullable = false, length = 350)
     String name;
-    @Column(name = "description", columnDefinition = "LONGTEXT")
+
+    BigDecimal price;
+
+    String thumbnail;
+
+    @Column(columnDefinition = "LONGTEXT")
     String description;
 
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    List<Product> products;
+    @ManyToOne
+    @JoinColumn(name = "category_id", referencedColumnName = "id")
+    Category category;
 }
