@@ -17,19 +17,21 @@ import java.math.BigDecimal;
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer id;
+    @Column(name = "product_id")
+    Integer productId;
 
-    @Column(name = "name", nullable = false, length = 350)
-    String name;
+    @Column(name = "product_name", nullable = false, length = 350)
+    String productName;
 
     BigDecimal price;
 
+    @Column(name = "product_thumbnail", nullable = false, length = 350)
     String thumbnail;
 
-    @Column(columnDefinition = "LONGTEXT")
+    @Column(name = "product_description", columnDefinition = "LONGTEXT")
     String description;
 
     @ManyToOne
-    @JoinColumn(name = "category_id", referencedColumnName = "id")
+    @JoinColumn(name = "category_id", referencedColumnName = "category_id")
     Category category;
 }

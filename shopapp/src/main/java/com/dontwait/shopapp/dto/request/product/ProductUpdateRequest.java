@@ -14,10 +14,10 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ProductUpdateRequest {
     @Size(min = 3, message = "PRODUCT_NAME_MUST_BE_GREATER_THAN_3")
-    String name;
+    String productName;
     @DecimalMin(value = "0.01", message = "PRODUCT_PRICE_MUST_BE_GREATER_THAN_0")
     String price;
-    String thumbnail;
-    String description;
+    String productThumbnail;
+    String productDescription;
     Integer categoryId;
 }

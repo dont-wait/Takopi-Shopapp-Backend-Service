@@ -2,16 +2,17 @@ package com.dontwait.shopapp.service.impl;
 
 import com.dontwait.shopapp.dto.request.product.ProductCreationRequest;
 import com.dontwait.shopapp.dto.response.ProductResponse;
+import com.dontwait.shopapp.entity.Category;
 import com.dontwait.shopapp.entity.Product;
 import com.dontwait.shopapp.enums.ErrorCode;
 import com.dontwait.shopapp.exception.AppException;
 import com.dontwait.shopapp.mapper.ProductMapper;
+import com.dontwait.shopapp.repository.CategoryRepository;
 import com.dontwait.shopapp.repository.ProductRepository;
 import com.dontwait.shopapp.service.ProductService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,7 @@ public class ProductServiceImpl implements ProductService {
 
     ProductMapper productMapper;
     ProductRepository productRepository;
+    CategoryRepository categoryRepository;
 
     @Override
     public ProductResponse findProductById(Integer productId) {
@@ -41,14 +43,14 @@ public class ProductServiceImpl implements ProductService {
         if(categoryId != null) {
             spec = spec.and((root, query, cb)
                     -> cb.equal(root.get("category")
-                    .get("id"), categoryId
+                    .get("categoryId"), categoryId
                     )
             );
         }
 
         if(keyword != null && !keyword.isEmpty()) {
             spec = spec.and((root, query, cb)
-                    -> cb.like(root.get("name"), "%" + keyword + "%"));
+                    -> cb.like(root.get("productName"), "%" + keyword + "%"));
         }
 
         return productRepository.findAll(spec, pageable).stream()
@@ -59,8 +61,12 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductResponse createProduct(ProductCreationRequest request) {
 
-        Product product = productMapper.toProduct(request);
-        return productMapper.toProductResponse(product);
+        Category category = categoryRepository.findById(request.getCategoryId())
+                .orElseThrow(() -> new AppException(ErrorCode.CATEGORY_ID_NOT_FOUND));
+
+        Product product = productMapper.toProduct(request, category);
+
+        return productMapper.toProductResponse(productRepository.save(product));
     }
 
     @Override

@@ -11,6 +11,6 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CategoryUpdateRequest {
-    String name;
-    String description;
+    String categoryName;
+    String categoryDescription;
 }

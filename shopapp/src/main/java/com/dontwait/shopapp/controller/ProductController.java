@@ -1,5 +1,6 @@
 package com.dontwait.shopapp.controller;
 
+import com.dontwait.shopapp.dto.request.product.ProductCreationRequest;
 import com.dontwait.shopapp.dto.response.ApiResponse;
 import com.dontwait.shopapp.dto.response.ProductResponse;
 import com.dontwait.shopapp.service.ProductService;
@@ -32,7 +33,7 @@ public class ProductController {
                                                       @RequestParam(name = "limit", defaultValue = "20") Integer limit,
                                                       @RequestParam(name = "keyword", required = false) String keyword,
                                                       @RequestParam(name = "categoryId", required = false) Integer categoryId,
-                                                      @RequestParam(name = "sort", defaultValue = "name") String sort,
+                                                      @RequestParam(name = "sort", defaultValue = "productName") String sort,
                                                       @RequestParam(name = "order", defaultValue = "asc") String order) {
         Sort.Direction direction = order.equalsIgnoreCase(("asc")) ? Sort.Direction.ASC : Sort.Direction.DESC;
         Pageable pageable = PageRequest.of(page, limit, Sort.by(direction, sort));
@@ -40,6 +41,14 @@ public class ProductController {
         return ApiResponse.<List<ProductResponse>>builder()
                 .result(productService.findAllProducts(pageable, keyword, categoryId))
                 .message("Get all products successfully")
+                .build();
+    }
+
+    @PostMapping
+    public ApiResponse<ProductResponse> createProduct(@RequestBody ProductCreationRequest request) {
+        return ApiResponse.<ProductResponse>builder()
+                .result(productService.createProduct(request))
+                .message("Create product successfully")
                 .build();
     }
 

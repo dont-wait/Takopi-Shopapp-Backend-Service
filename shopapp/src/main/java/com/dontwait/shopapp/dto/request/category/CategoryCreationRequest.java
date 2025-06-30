@@ -17,6 +17,6 @@ public class CategoryCreationRequest {
 
     @NotNull(message = "CATEGORY_NAME_CANT_NULL")
     @Min(value = 3, message = "CATEGORY_NAME_MUST_BE_GREATER_THAN_3")
-    String name;
-    String description;
+    String categoryName;
+    String categoryDescription;
 }

@@ -40,7 +40,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public CategoryResponse createCategory(CategoryCreationRequest request) {
 
-        if(categoryRepository.existsByName(request.getName())) {
+        if(categoryRepository.existsByCategoryName(request.getCategoryName())) {
             throw new AppException(ErrorCode.CATEGORY_NAME_EXISTED);
         }
 
@@ -55,7 +55,7 @@ public class CategoryServiceImpl implements CategoryService {
 
         Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new AppException(ErrorCode.CATEGORY_ID_NOT_FOUND));
 
-        if(categoryRepository.existsByName(request.getName())) {
+        if(categoryRepository.existsByCategoryName(request.getCategoryName())) {
             throw new AppException(ErrorCode.CATEGORY_NAME_EXISTED);
         }
         categoryMapper.updateCategory(request, category);
