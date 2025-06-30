@@ -1,9 +1,11 @@
 package com.dontwait.shopapp.controller;
 
 import com.dontwait.shopapp.dto.request.product.ProductCreationRequest;
+import com.dontwait.shopapp.dto.request.product.ProductUpdateRequest;
 import com.dontwait.shopapp.dto.response.ApiResponse;
 import com.dontwait.shopapp.dto.response.ProductResponse;
 import com.dontwait.shopapp.service.ProductService;
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -45,10 +47,17 @@ public class ProductController {
     }
 
     @PostMapping
-    public ApiResponse<ProductResponse> createProduct(@RequestBody ProductCreationRequest request) {
+    public ApiResponse<ProductResponse> createProduct(@Valid @RequestBody ProductCreationRequest request) {
         return ApiResponse.<ProductResponse>builder()
                 .result(productService.createProduct(request))
                 .message("Create product successfully")
+                .build();
+    }
+
+    @PutMapping("{productId}")
+    public ApiResponse<ProductResponse> updateProduct( @PathVariable Integer productId, @Valid @RequestBody ProductUpdateRequest request) {
+        return ApiResponse.<ProductResponse>builder()
+                .result(productService.updateProduct(productId, request))
                 .build();
     }
 

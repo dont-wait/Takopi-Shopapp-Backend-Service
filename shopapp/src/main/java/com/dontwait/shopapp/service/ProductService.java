@@ -1,6 +1,7 @@
 package com.dontwait.shopapp.service;
 
 import com.dontwait.shopapp.dto.request.product.ProductCreationRequest;
+import com.dontwait.shopapp.dto.request.product.ProductUpdateRequest;
 import com.dontwait.shopapp.dto.response.ProductResponse;
 import org.springframework.data.domain.Pageable;
 
@@ -11,4 +12,5 @@ public interface ProductService {
     List<ProductResponse> findAllProducts(Pageable pageable, String keyword, Integer categoryId);
     ProductResponse createProduct(ProductCreationRequest request);
     void deleteProduct(Integer productId);
+    ProductResponse updateProduct(Integer productId, ProductUpdateRequest request);
 }

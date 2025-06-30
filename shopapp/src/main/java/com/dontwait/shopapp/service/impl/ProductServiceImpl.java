@@ -1,6 +1,7 @@
 package com.dontwait.shopapp.service.impl;
 
 import com.dontwait.shopapp.dto.request.product.ProductCreationRequest;
+import com.dontwait.shopapp.dto.request.product.ProductUpdateRequest;
 import com.dontwait.shopapp.dto.response.ProductResponse;
 import com.dontwait.shopapp.entity.Category;
 import com.dontwait.shopapp.entity.Product;
@@ -72,5 +73,17 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void deleteProduct(Integer productId) {
         productRepository.deleteById(productId);
+    }
+
+    @Override
+    public ProductResponse updateProduct(Integer productId, ProductUpdateRequest request) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_ID_NOT_FOUND));
+
+        Category category = categoryRepository.findById(request.getCategoryId())
+                .orElseThrow(() -> new AppException(ErrorCode.CATEGORY_ID_NOT_FOUND));
+
+        productMapper.updateProduct(request, product);
+        return productMapper.toProductResponse(productRepository.save(product));
     }
 }
