@@ -1,0 +1,42 @@
+package com.dontwait.shopapp.entity;
+
+import jakarta.persistence.*;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
+
+@Entity
+@Table(name = "users")
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@Builder
+@FieldDefaults(level = AccessLevel.PRIVATE)
+public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Integer id;
+
+    @Column(name = "full_name", length = 100)
+    String fullName;
+    @Column(name = "phone_number", length = 11)
+    String phoneNumber;
+
+    @Column(name = "date_of_birth", nullable = false)
+    String dateOfBirth;
+
+    @Column(name = "address", length = 200)
+    String address;
+
+    @Column(name = "password", nullable = false, length = 100)
+    String password;
+
+    @Column(name = "facebook_account_id")
+    Integer facebookAccountId;
+
+    @Column(name = "google_account_id")
+    Integer googleAccountId;
+
+    @Column(name = "role_id", nullable = false)
+    Long roleId;
+}
