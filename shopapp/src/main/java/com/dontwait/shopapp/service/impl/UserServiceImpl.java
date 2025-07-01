@@ -40,6 +40,9 @@ public class UserServiceImpl implements UserService {
         Role role = roleRepository.findByRoleId(request.getRoleId()).
                 orElseThrow(() -> new AppException(ErrorCode.ROLE_ID_NOT_FOUND));
 
+        if(!request.getPassword().equals(request.getRePassword()))
+            throw new AppException(ErrorCode.RE_PASSWORD_NOT_MATCH);
+
         User user = userMapper.toUser(request, role);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
 
