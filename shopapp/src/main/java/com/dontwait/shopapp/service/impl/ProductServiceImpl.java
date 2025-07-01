@@ -89,6 +89,7 @@ public class ProductServiceImpl implements ProductService {
                 throw new AppException(ErrorCode.FILE_TYPE_NOT_SUPPORTED);
 
             String filename = FileUtil.storeFile(file);
+            //TODO: Save file to product_image table
         }
 
 
