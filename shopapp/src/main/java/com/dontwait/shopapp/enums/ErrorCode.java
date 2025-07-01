@@ -15,6 +15,8 @@ public enum ErrorCode {
     CATEGORY_NAME_MUST_BE_GREATER_THAN_3(1002, "Category name must be greater than 3", HttpStatus.CONFLICT),
     PRODUCT_PRICE_MUST_BE_GREATER_THAN_0(1002, "Product price must be greater than 0", HttpStatus.CONFLICT),
     PRODUCT_NAME_MUST_BE_GREATER_THAN_3(1002, "Product name must be greater than 3", HttpStatus.CONFLICT),
+    PHONE_NUMBER_EXISTED(1002, "Phone number existed", HttpStatus.CONFLICT),
+
     PHONE_NUMBER_CANT_BLANK(1002, "Phone number can't blank", HttpStatus.BAD_REQUEST),
     PHONE_NUMBER_MUST_BE_10_DIGIT(1002, "Phone number must be 10 digit", HttpStatus.BAD_REQUEST),
     PASSWORD_CANT_BLANK(1002, "Password Cant blank", HttpStatus.BAD_REQUEST),
@@ -30,6 +32,7 @@ public enum ErrorCode {
 
     PRODUCT_ID_NOT_FOUND(1004, "Product id not found", HttpStatus.NOT_FOUND),
     CATEGORY_ID_NOT_FOUND(1004, "Category id not found", HttpStatus.NOT_FOUND),
+    ROLE_ID_NOT_FOUND(1004, "Role id not found", HttpStatus.NOT_FOUND),
     UNCATEGORIZED(6789, "Uncategorized Exception", HttpStatus.INTERNAL_SERVER_ERROR);
     int code;
     String message;

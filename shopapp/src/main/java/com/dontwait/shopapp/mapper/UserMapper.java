@@ -9,6 +9,7 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface UserMapper {
     @Mapping(target = "userRole", source = "role.roleName")
+    @Mapping(target= "dateOfBirth", source = "dateOfBirth", dateFormat = "yyyy-MM-dd")
     UserResponse toUserResponse(User user);
 
     User toUser(UserRegisterRequest request);

@@ -15,9 +15,10 @@ import lombok.experimental.FieldDefaults;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer id;
+    @Column(name = "id")
+    Integer userId;
 
-    @Column(name = "full_name", length = 100)
+    @Column(name = "fullname", length = 100)
     String fullName;
     @Column(name = "phone_number", length = 11)
     String phoneNumber;

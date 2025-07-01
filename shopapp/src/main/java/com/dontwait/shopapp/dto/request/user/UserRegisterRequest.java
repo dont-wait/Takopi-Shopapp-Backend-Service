@@ -30,9 +30,10 @@ public class UserRegisterRequest {
     String password;
     @NotBlank(message = "RE_PASSWORD_CANT_BLANK")
     String rePassword;
+
     Date dateOfBirth;
     Integer facebookAccountId;
     Integer googleAccountId;
     @NotNull(message = "ROLE_CANT_NULL")
-    Long roleId;
+    Integer roleId;
 }
