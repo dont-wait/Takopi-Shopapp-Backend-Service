@@ -67,8 +67,6 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductResponse createProduct(ProductCreationRequest request) throws IOException {
-
-
         Category category = categoryRepository.findById(request.getCategoryId())
                 .orElseThrow(() -> new AppException(ErrorCode.CATEGORY_ID_NOT_FOUND));
 
@@ -83,7 +81,7 @@ public class ProductServiceImpl implements ProductService {
             //Check size
             if(file.getSize() > 10 * 1024 * 1024)
                 throw new AppException(ErrorCode.FILE_TOO_LARGE);
-            //Check isImage ?
+            //Check isImage
             String contentType = file.getContentType();
             if(contentType == null || !contentType.startsWith("image/"))
                 throw new AppException(ErrorCode.FILE_TYPE_NOT_SUPPORTED);
@@ -91,7 +89,6 @@ public class ProductServiceImpl implements ProductService {
             String filename = FileUtil.storeFile(file);
             //TODO: Save file to product_image table
         }
-
 
         Product product = productMapper.toProduct(request, category);
 

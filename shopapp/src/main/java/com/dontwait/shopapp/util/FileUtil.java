@@ -17,16 +17,20 @@ public class FileUtil {
         if(!isImageFile(file) || file.getOriginalFilename() == null)
             throw new IOException("Invalid image format");
         String filename = StringUtils.cleanPath(file.getOriginalFilename());
+
         //Add uuid for make unique name file
         String uniqueFilename = UUID.randomUUID().toString() + "_" + filename;
+
         //Create path to folder for save image
         Path uploadDir = Paths.get("uploads");
+
         //Check existed folder, if no create new
         if(!Files.exists(uploadDir))
             Files.createDirectories(uploadDir);
 
         //Create full path
         Path destination = Paths.get(uploadDir.toString(), uniqueFilename);
+
         //Copy to destination folder
         Files.copy(file.getInputStream(), destination, StandardCopyOption.REPLACE_EXISTING);
         return uniqueFilename;
