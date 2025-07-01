@@ -29,7 +29,7 @@ public class Product {
     String thumbnail;
 
     @Column(name = "product_description", columnDefinition = "LONGTEXT")
-    String description;
+    String productDescription;
 
     @ManyToOne
     @JoinColumn(name = "category_id", referencedColumnName = "category_id")

@@ -11,14 +11,20 @@ import com.dontwait.shopapp.mapper.ProductMapper;
 import com.dontwait.shopapp.repository.CategoryRepository;
 import com.dontwait.shopapp.repository.ProductRepository;
 import com.dontwait.shopapp.service.ProductService;
+import com.dontwait.shopapp.util.FileUtil;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -60,10 +66,31 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductResponse createProduct(ProductCreationRequest request) {
+    public ProductResponse createProduct(ProductCreationRequest request) throws IOException {
+
 
         Category category = categoryRepository.findById(request.getCategoryId())
                 .orElseThrow(() -> new AppException(ErrorCode.CATEGORY_ID_NOT_FOUND));
+
+        //Get List Multipart file in request, check if null, init list empty and pass
+        List<MultipartFile> files = Optional.ofNullable(request.getFiles())
+                .orElse(Collections.emptyList());
+
+        //Foreach to save image to /upload
+        for (MultipartFile file : files) {
+            if(file.isEmpty())
+                continue; //pass empty file
+            //Check size
+            if(file.getSize() > 10 * 1024 * 1024)
+                throw new AppException(ErrorCode.FILE_TOO_LARGE);
+            //Check isImage ?
+            String contentType = file.getContentType();
+            if(contentType == null || !contentType.startsWith("image/"))
+                throw new AppException(ErrorCode.FILE_TYPE_NOT_SUPPORTED);
+
+            String filename = FileUtil.storeFile(file);
+        }
+
 
         Product product = productMapper.toProduct(request, category);
 
