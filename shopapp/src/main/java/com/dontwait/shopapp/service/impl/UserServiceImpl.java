@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,6 +29,7 @@ public class UserServiceImpl implements UserService {
     UserMapper userMapper;
     UserRepository userRepository;
     RoleRepository roleRepository;
+    PasswordEncoder passwordEncoder;
 
     @Override
     public UserResponse createUser(UserRegisterRequest request) {
@@ -38,7 +40,9 @@ public class UserServiceImpl implements UserService {
         Role role = roleRepository.findByRoleId(request.getRoleId()).
                 orElseThrow(() -> new AppException(ErrorCode.ROLE_ID_NOT_FOUND));
 
-        User user = userMapper.toUser(request);
+        User user = userMapper.toUser(request, role);
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+
         userRepository.save(user);
         return userMapper.toUserResponse(user);
     }

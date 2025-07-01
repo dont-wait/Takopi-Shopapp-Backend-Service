@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.Date;
+
 @Entity
 @Table(name = "users")
 @AllArgsConstructor
@@ -24,7 +26,7 @@ public class User {
     String phoneNumber;
 
     @Column(name = "date_of_birth", nullable = false)
-    String dateOfBirth;
+    Date dateOfBirth;
 
     @Column(name = "address", length = 200)
     String address;
