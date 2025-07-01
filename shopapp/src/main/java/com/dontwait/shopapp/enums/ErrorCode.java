@@ -16,6 +16,9 @@ public enum ErrorCode {
     PRODUCT_PRICE_MUST_BE_GREATER_THAN_0(1002, "Product price must be greater than 0", HttpStatus.CONFLICT),
     PRODUCT_NAME_MUST_BE_GREATER_THAN_3(1002, "Product name must be greater than 3", HttpStatus.CONFLICT),
 
+    FILE_TOO_LARGE(1003, "File too large! Maximun size is 10MB", HttpStatus.PAYLOAD_TOO_LARGE),
+    FILE_TYPE_NOT_SUPPORTED(1003, "File must be an image", HttpStatus.UNSUPPORTED_MEDIA_TYPE),
+
     CATEGORY_NAME_EXISTED(1003, "Category name existed", HttpStatus.CONFLICT),
 
     PRODUCT_ID_NOT_FOUND(1004, "Product id not found", HttpStatus.NOT_FOUND),

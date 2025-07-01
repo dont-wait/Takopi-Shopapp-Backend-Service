@@ -1,6 +1,10 @@
 spring:
   application:
     name: shopapp
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
   datasource:
     url: ${DB_URL}
     driver-class-name: ${DRIVER_NAME}

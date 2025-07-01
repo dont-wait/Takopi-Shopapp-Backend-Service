@@ -12,8 +12,10 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -46,8 +48,8 @@ public class ProductController {
                 .build();
     }
 
-    @PostMapping
-    public ApiResponse<ProductResponse> createProduct(@Valid @RequestBody ProductCreationRequest request) {
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ApiResponse<ProductResponse> createProduct(@Valid @ModelAttribute ProductCreationRequest request) throws IOException {
         return ApiResponse.<ProductResponse>builder()
                 .result(productService.createProduct(request))
                 .message("Create product successfully")
