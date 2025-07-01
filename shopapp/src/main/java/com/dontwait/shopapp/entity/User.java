@@ -37,6 +37,7 @@ public class User {
     @Column(name = "google_account_id")
     Integer googleAccountId;
 
-    @Column(name = "role_id", nullable = false)
-    Long roleId;
+    @ManyToOne
+    @JoinColumn(name = "role_id", referencedColumnName = "role_id")
+    Role role;
 }

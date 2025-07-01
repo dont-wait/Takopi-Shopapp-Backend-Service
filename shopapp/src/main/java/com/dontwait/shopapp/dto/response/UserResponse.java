@@ -17,5 +17,5 @@ public class UserResponse {
     Date dateOfBirth;
     Integer facebookAccountId;
     Integer googleAccountId;
-    Long roleId;
+    String userRole;
 }
