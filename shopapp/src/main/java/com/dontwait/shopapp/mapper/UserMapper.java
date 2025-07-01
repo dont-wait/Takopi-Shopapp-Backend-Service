@@ -5,7 +5,6 @@ import com.dontwait.shopapp.dto.response.UserResponse;
 import com.dontwait.shopapp.entity.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.springframework.stereotype.Component;
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {
