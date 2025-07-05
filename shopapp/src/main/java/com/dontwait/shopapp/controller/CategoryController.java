@@ -29,7 +29,7 @@ public class CategoryController {
     }
 
     @GetMapping("{categoryId}")
-    public ApiResponse<CategoryResponse> findCategoryById(@PathVariable Integer categoryId) {
+    public ApiResponse<CategoryResponse> findCategoryById(@PathVariable Long categoryId) {
         return ApiResponse.<CategoryResponse>builder()
                 .result(categoryService.findCategoryById(categoryId))
                 .message("Get category successfully")
@@ -45,7 +45,7 @@ public class CategoryController {
     }
 
     @PutMapping("{categoryId}")
-    public ApiResponse<CategoryResponse> updateCategory(@PathVariable Integer categoryId, @RequestBody CategoryUpdateRequest request) {
+    public ApiResponse<CategoryResponse> updateCategory(@PathVariable Long categoryId, @RequestBody CategoryUpdateRequest request) {
         return ApiResponse.<CategoryResponse>builder()
                 .result(categoryService.updateCategory(categoryId, request))
                 .message("Create category successfully")
@@ -53,7 +53,7 @@ public class CategoryController {
     }
 
     @DeleteMapping("{categoryId}")
-    public ApiResponse<String> deleteCategory(@PathVariable Integer categoryId) {
+    public ApiResponse<String> deleteCategory(@PathVariable Long categoryId) {
         categoryService.deleteCategory(categoryId);
         return ApiResponse.<String>builder()
                 .message("Delete category successfully")

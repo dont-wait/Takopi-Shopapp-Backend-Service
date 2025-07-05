@@ -19,5 +19,5 @@ public class ProductUpdateRequest {
     String price;
     String productThumbnail;
     String productDescription;
-    Integer categoryId;
+    Long categoryId;
 }

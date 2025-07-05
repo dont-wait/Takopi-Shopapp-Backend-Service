@@ -24,7 +24,7 @@ public class ProductCreationRequest {
     String productThumbnail;
     String productDescription;
     @NotNull(message = "CATEGORY_ID_CANT_NULL")
-    Integer categoryId;
+    Long categoryId;
 
     List<MultipartFile> files;
 }

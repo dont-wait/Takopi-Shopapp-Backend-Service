@@ -45,20 +45,20 @@ class ProductServiceImplTest {
     void setUp() {
         // Initialize test data
         product1 = new Product();
-        product1.setId(1);
-        product1.setName("Test Product 1");
+        product1.setProductId(1L);
+        product1.setProductName("Test Product 1");
 
         product2 = new Product();
-        product2.setId(2);
-        product2.setName("Test Product 2");
+        product2.setProductId(2L);
+        product2.setProductName("Test Product 2");
 
         productResponse1 = new ProductResponse();
-        productResponse1.setId(1);
-        productResponse1.setName("Test Product 1");
+        productResponse1.setProductId(1L);
+        productResponse1.setProductName("Test Product 1");
 
         productResponse2 = new ProductResponse();
-        productResponse2.setId(2);
-        productResponse2.setName("Test Product 2");
+        productResponse2.setProductId(2L);
+        productResponse2.setProductName("Test Product 2");
     }
 
     @Test
@@ -104,7 +104,7 @@ class ProductServiceImplTest {
     @Test
     void findAllProducts_WithCategoryId_ShouldReturnFilteredProducts() {
         // Arrange
-        Integer categoryId = 1;
+        Long categoryId = 1L;
         PageRequest pageable = PageRequest.of(0, 10, Sort.by("name"));
         Page<Product> productPage = new PageImpl<>(List.of(product1));
         
@@ -125,7 +125,7 @@ class ProductServiceImplTest {
     void findAllProducts_WithKeywordAndCategoryId_ShouldReturnFilteredProducts() {
         // Arrange
         String keyword = "Test";
-        Integer categoryId = 1;
+        Long categoryId = 1L;
         PageRequest pageable = PageRequest.of(0, 10, Sort.by("name"));
         Page<Product> productPage = new PageImpl<>(List.of(product1));
         

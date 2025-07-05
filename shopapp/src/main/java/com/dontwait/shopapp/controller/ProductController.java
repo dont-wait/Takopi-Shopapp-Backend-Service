@@ -26,7 +26,7 @@ public class ProductController {
     ProductService productService;
 
     @GetMapping("{productId}")
-    public ApiResponse<ProductResponse> findProductById(@PathVariable Integer productId) {
+    public ApiResponse<ProductResponse> findProductById(@PathVariable Long productId) {
         return ApiResponse.<ProductResponse>builder()
                 .result(productService.findProductById(productId))
                 .message("Get product successfully")
@@ -36,7 +36,7 @@ public class ProductController {
     public ApiResponse<List<ProductResponse>> findAll(@RequestParam(name = "page", defaultValue = "0") Integer page,
                                                       @RequestParam(name = "limit", defaultValue = "20") Integer limit,
                                                       @RequestParam(name = "keyword", required = false) String keyword,
-                                                      @RequestParam(name = "categoryId", required = false) Integer categoryId,
+                                                      @RequestParam(name = "categoryId", required = false) Long categoryId,
                                                       @RequestParam(name = "sort", defaultValue = "productName") String sort,
                                                       @RequestParam(name = "order", defaultValue = "asc") String order) {
         Sort.Direction direction = order.equalsIgnoreCase(("asc")) ? Sort.Direction.ASC : Sort.Direction.DESC;
@@ -57,14 +57,14 @@ public class ProductController {
     }
 
     @PutMapping("{productId}")
-    public ApiResponse<ProductResponse> updateProduct( @PathVariable Integer productId, @Valid @RequestBody ProductUpdateRequest request) {
+    public ApiResponse<ProductResponse> updateProduct( @PathVariable Long productId, @Valid @RequestBody ProductUpdateRequest request) {
         return ApiResponse.<ProductResponse>builder()
                 .result(productService.updateProduct(productId, request))
                 .build();
     }
 
     @DeleteMapping("{productId}")
-    public ApiResponse<String> deleteProduct(@PathVariable Integer productId) {
+    public ApiResponse<String> deleteProduct(@PathVariable Long productId) {
         productService.deleteProduct(productId);
         return ApiResponse.<String>builder()
                 .message("Delete product successfully")

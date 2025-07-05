@@ -9,9 +9,9 @@ import java.io.IOException;
 import java.util.List;
 
 public interface ProductService {
-    ProductResponse findProductById(Integer productId);
-    List<ProductResponse> findAllProducts(Pageable pageable, String keyword, Integer categoryId);
+    ProductResponse findProductById(Long productId);
+    List<ProductResponse> findAllProducts(Pageable pageable, String keyword, Long categoryId);
     ProductResponse createProduct(ProductCreationRequest request) throws IOException;
-    void deleteProduct(Integer productId);
-    ProductResponse updateProduct(Integer productId, ProductUpdateRequest request);
+    void deleteProduct(Long productId);
+    ProductResponse updateProduct(Long productId, ProductUpdateRequest request);
 }

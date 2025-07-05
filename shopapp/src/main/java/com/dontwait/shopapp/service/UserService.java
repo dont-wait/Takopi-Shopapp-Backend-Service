@@ -10,7 +10,7 @@ import java.util.List;
 public interface UserService {
     UserResponse createUser(UserRegisterRequest request);
     List<UserResponse> findAllUsers(Pageable pageable, String keyword, Integer roleId);
-    UserResponse findUserById(Integer userId);
-    void deleteUser(Integer userId);
-    UserResponse updateUser(Integer userId, UserUpdateRequest request);
+    UserResponse findUserById(Long userId);
+    void deleteUser(Long userId);
+    UserResponse updateUser(Long userId, UserUpdateRequest request);
 }

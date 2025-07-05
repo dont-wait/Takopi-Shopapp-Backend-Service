@@ -36,7 +36,7 @@ public class ProductServiceImpl implements ProductService {
     CategoryRepository categoryRepository;
 
     @Override
-    public ProductResponse findProductById(Integer productId) {
+    public ProductResponse findProductById(Long productId) {
         Product product = productRepository.findById(productId).
                 orElseThrow(() -> new AppException(ErrorCode.PRODUCT_ID_NOT_FOUND));
 
@@ -44,7 +44,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductResponse> findAllProducts(Pageable pageable, String keyword, Integer categoryId) {
+    public List<ProductResponse> findAllProducts(Pageable pageable, String keyword, Long categoryId) {
         Specification<Product> spec = Specification.where(null);
 
         if(categoryId != null) {
@@ -96,12 +96,12 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void deleteProduct(Integer productId) {
+    public void deleteProduct(Long productId) {
         productRepository.deleteById(productId);
     }
 
     @Override
-    public ProductResponse updateProduct(Integer productId, ProductUpdateRequest request) {
+    public ProductResponse updateProduct(Long productId, ProductUpdateRequest request) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_ID_NOT_FOUND));
 

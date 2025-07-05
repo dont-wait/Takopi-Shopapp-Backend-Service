@@ -10,9 +10,9 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Integer> {
-    Optional<User> findByUserId(Integer userId);
+public interface UserRepository extends JpaRepository<User, Long> {
+    Optional<User> findByUserId(Long userId);
     Boolean existsByPhoneNumber(String phoneNumber);
     Page<User> findAll(Specification<User> spec, Pageable pageable);
-    void deleteByUserId(Integer userId);
+    void deleteByUserId(Long userId);
 }

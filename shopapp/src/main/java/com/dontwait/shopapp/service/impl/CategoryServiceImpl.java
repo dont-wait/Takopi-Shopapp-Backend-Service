@@ -25,7 +25,7 @@ public class CategoryServiceImpl implements CategoryService {
     CategoryMapper categoryMapper;
 
     @Override
-    public CategoryResponse findCategoryById(Integer categoryId) {
+    public CategoryResponse findCategoryById(Long categoryId) {
         Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new AppException(ErrorCode.CATEGORY_ID_NOT_FOUND));
         return categoryMapper.toCategoryResponse(category);
     }
@@ -51,7 +51,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public CategoryResponse updateCategory(Integer categoryId, CategoryUpdateRequest request) {
+    public CategoryResponse updateCategory(Long categoryId, CategoryUpdateRequest request) {
 
         Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new AppException(ErrorCode.CATEGORY_ID_NOT_FOUND));
 
@@ -65,7 +65,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public void deleteCategory(Integer categoryId) {
+    public void deleteCategory(Long categoryId) {
         categoryRepository.deleteById(categoryId);
     }
 }

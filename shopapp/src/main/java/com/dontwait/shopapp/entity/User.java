@@ -5,6 +5,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -18,7 +19,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    Integer userId;
+    Long userId;
 
     @Column(name = "fullname", length = 100)
     String fullName;
@@ -43,4 +44,7 @@ public class User {
     @ManyToOne
     @JoinColumn(name = "role_id", referencedColumnName = "role_id")
     Role role;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    List<Order> orders;
 }

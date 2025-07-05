@@ -67,17 +67,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponse findUserById(Integer userId) {
+    public UserResponse findUserById(Long userId) {
         return null;
     }
 
     @Override
-    public void deleteUser(Integer userId) {
+    public void deleteUser(Long userId) {
 
     }
 
     @Override
-    public UserResponse updateUser(Integer userId, UserUpdateRequest request) {
+    public UserResponse updateUser(Long userId, UserUpdateRequest request) {
         return null;
     }
 }

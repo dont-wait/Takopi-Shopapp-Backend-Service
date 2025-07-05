@@ -11,7 +11,7 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CategoryResponse {
-    Integer categoryId;
+    Long categoryId;
     String categoryName;
     String categoryDescription;
 }

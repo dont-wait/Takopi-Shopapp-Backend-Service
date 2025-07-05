@@ -38,17 +38,17 @@ class CategoryControllerTest {
     void setUp() {
         // Setup mock data
         mockCategoryResponse = new CategoryResponse();
-        mockCategoryResponse.setId(1);
-        mockCategoryResponse.setName("Electronics");
-        mockCategoryResponse.setDescription("Electronic devices and accessories");
+        mockCategoryResponse.setCategoryId(1L);
+        mockCategoryResponse.setCategoryName("Electronics");
+        mockCategoryResponse.setCategoryDescription("Electronic devices and accessories");
 
         creationRequest = new CategoryCreationRequest();
-        creationRequest.setName("Electronics");
-        creationRequest.setDescription("Electronic devices and accessories");
+        creationRequest.setCategoryName("Electronics");
+        creationRequest.setCategoryDescription("Electronic devices and accessories");
 
         updateRequest = new CategoryUpdateRequest();
-        updateRequest.setName("Updated Electronics");
-        updateRequest.setDescription("Updated description");
+        updateRequest.setCategoryName("Updated Electronics");
+        updateRequest.setCategoryDescription("Updated description");
     }
 
     @Test
@@ -70,7 +70,7 @@ class CategoryControllerTest {
     @Test
     void findCategoryById_ShouldReturnCategory() {
         // Arrange
-        Integer categoryId = 1;
+        Long categoryId = 1L;
         when(categoryService.findCategoryById(categoryId)).thenReturn(mockCategoryResponse);
 
         // Act
@@ -102,7 +102,7 @@ class CategoryControllerTest {
     @Test
     void updateCategory_ShouldReturnUpdatedCategory() {
         // Arrange
-        Integer categoryId = 1;
+        Long categoryId = 1L;
         when(categoryService.updateCategory(eq(categoryId), any(CategoryUpdateRequest.class)))
                 .thenReturn(mockCategoryResponse);
 
@@ -119,7 +119,7 @@ class CategoryControllerTest {
     @Test
     void deleteCategory_ShouldReturnSuccessMessage() {
         // Arrange
-        Integer categoryId = 1;
+        Long categoryId = 1L;
         doNothing().when(categoryService).deleteCategory(categoryId);
 
         // Act
