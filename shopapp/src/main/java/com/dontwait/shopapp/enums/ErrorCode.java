@@ -19,6 +19,7 @@ public enum ErrorCode {
 
     PHONE_NUMBER_CANT_BLANK(1002, "Phone number can't blank", HttpStatus.BAD_REQUEST),
     PHONE_NUMBER_MUST_BE_10_DIGIT(1002, "Phone number must be 10 digit", HttpStatus.BAD_REQUEST),
+    EMAIL_INVALID(1002, "Email is invalid", HttpStatus.BAD_REQUEST),
     PASSWORD_CANT_BLANK(1002, "Password Cant blank", HttpStatus.BAD_REQUEST),
     RE_PASSWORD_CANT_BLANK(1002, "RePassword Cant blank", HttpStatus.BAD_REQUEST),
     ROLE_CANT_NULL(1002, "Role can't null", HttpStatus.BAD_REQUEST),
