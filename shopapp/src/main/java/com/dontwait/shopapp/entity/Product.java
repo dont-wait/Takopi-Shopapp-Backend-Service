@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 @Table(name = "products")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
-public class Product {
+public class Product extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "product_id")
