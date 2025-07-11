@@ -23,10 +23,10 @@ public class User extends BaseEntity{
 
     @Column(name = "fullname", length = 100)
     String fullName;
-    @Column(name = "phone_number", length = 11)
+    @Column(name = "phone_number", length = 11, nullable = false)
     String phoneNumber;
 
-    @Column(name = "date_of_birth", nullable = false)
+    @Column(name = "date_of_birth")
     Date dateOfBirth;
 
     @Column(name = "address", length = 200)
@@ -47,4 +47,10 @@ public class User extends BaseEntity{
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     List<Order> orders;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    List<SocialAccount> socialAccounts;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    List<Token> tokens;
 }

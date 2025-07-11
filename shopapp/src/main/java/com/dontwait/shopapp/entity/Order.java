@@ -6,6 +6,7 @@ import lombok.experimental.FieldDefaults;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @AllArgsConstructor
@@ -14,7 +15,7 @@ import java.time.LocalDate;
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Table(name = "orders")
-public class Order {
+public class Order extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "order_id")
@@ -30,14 +31,20 @@ public class Order {
     @Column(name = "order_email", length = 100)
     String orderEmail;
 
-    @Column(name = "order_phone_number", length = 11)
+    @Column(name = "order_phone_number", length = 11, nullable = false)
     String orderPhoneNumber;
 
-    @Column(name = "order_address", length = 100)
+    @Column(name = "order_address", length = 100, nullable = false)
     String address;
 
     @Column(name = "note", length = 100)
     String note;
+
+    @Column(name = "order_date")
+    LocalDateTime orderDate;
+
+    @Column(name = "order_status")
+    String orderStatus;
 
     @Column(name = "total_money")
     BigDecimal totalMoney;
