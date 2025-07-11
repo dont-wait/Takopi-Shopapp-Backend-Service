@@ -1,6 +1,7 @@
 package com.dontwait.shopapp.controller;
 
 import com.dontwait.shopapp.dto.request.order.OrderCreationRequest;
+import com.dontwait.shopapp.dto.request.order.OrderUpdateRequest;
 import com.dontwait.shopapp.dto.response.ApiResponse;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +18,7 @@ public class OrderController {
     }
 
     //TODO: Pageable
-    @GetMapping("/{user_id}")
+    @GetMapping("/{userId}")
     public ApiResponse<String> getOrders(@Valid @PathVariable Long userId) {
         return ApiResponse.<String>builder()
                 .message("Get all orders successfully")
@@ -25,7 +26,8 @@ public class OrderController {
     }
 
     @PutMapping("/{userId}")
-    public ApiResponse<String> updateOrder(@Valid @PathVariable Long userId) {
+    public ApiResponse<String> updateOrder(@Valid @PathVariable Long userId,
+                                           @RequestBody OrderUpdateRequest request) {
         return ApiResponse.<String>builder()
                 .message("Update successfully")
                 .build();
