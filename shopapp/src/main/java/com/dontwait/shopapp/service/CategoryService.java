@@ -8,9 +8,9 @@ import com.dontwait.shopapp.entity.Category;
 import java.util.List;
 
 public interface CategoryService {
-    CategoryResponse findCategoryById(Integer categoryId);
+    CategoryResponse findCategoryById(Long categoryId);
     List<CategoryResponse> findAllCategories();
     CategoryResponse createCategory(CategoryCreationRequest request);
-    CategoryResponse updateCategory(Integer categoryId, CategoryUpdateRequest request);
-    void deleteCategory(Integer categoryId);
+    CategoryResponse updateCategory(Long categoryId, CategoryUpdateRequest request);
+    void deleteCategory(Long categoryId);
 }

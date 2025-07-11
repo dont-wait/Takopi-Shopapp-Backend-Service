@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface CategoryRepository extends JpaRepository<Category, Integer> {
-    Optional<Category> findById(Integer id);
+public interface CategoryRepository extends JpaRepository<Category, Long> {
+    Optional<Category> findByCategoryId(Long categoryId);
     List<Category> findAll();
-    Boolean existsByName(String name);
-    void deleteById(Integer id);
+    Boolean existsByCategoryName(String categoryName);
+    void deleteByCategoryId(Long categoryId);
 }
