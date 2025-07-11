@@ -16,11 +16,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class OrderCreationRequest {
-
-    @Min(value
-    = 1, message = "USER_ID_MUST_BE_GREATER_THAN_1")
-    Long userId;
+public class OrderUpdateRequest {
 
     String orderFullName;
 
@@ -43,5 +39,4 @@ public class OrderCreationRequest {
     String shippingAddress;
 
     String paymentMethod;
-
 }
