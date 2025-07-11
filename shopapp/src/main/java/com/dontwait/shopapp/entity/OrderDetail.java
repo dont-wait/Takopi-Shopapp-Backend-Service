@@ -17,10 +17,14 @@ public class OrderDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    @Column(name = "order_id", nullable = false)
-    Long orderId;
+
+    @ManyToOne
+    @JoinColumn(name = "order_id", referencedColumnName = "order_id")
+    Order order;
+
     @Column(name = "product_id", nullable = false)
     Long productId;
+
     @Column(name = "price", nullable = false)
     BigDecimal price;
     @Column(name = "number_of_products", nullable = false)
