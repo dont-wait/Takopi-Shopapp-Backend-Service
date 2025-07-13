@@ -35,5 +35,5 @@ public class UserRegisterRequest {
     Integer facebookAccountId;
     Integer googleAccountId;
     @NotNull(message = "ROLE_CANT_NULL")
-    Integer roleId;
+    Long roleId;
 }

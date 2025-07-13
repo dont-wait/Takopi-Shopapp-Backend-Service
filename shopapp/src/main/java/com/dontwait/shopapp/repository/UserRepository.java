@@ -12,6 +12,7 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByUserId(Long userId);
+    Optional<User> findByPhoneNumber(String phoneNumber);
     Boolean existsByPhoneNumber(String phoneNumber);
     Page<User> findAll(Specification<User> spec, Pageable pageable);
     void deleteByUserId(Long userId);
