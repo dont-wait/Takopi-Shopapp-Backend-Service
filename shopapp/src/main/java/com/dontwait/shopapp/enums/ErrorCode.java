@@ -40,6 +40,7 @@ public enum ErrorCode {
     FULLNAME_NOT_FOUND(1004, "Full name not found", HttpStatus.NOT_FOUND),
     CATEGORY_ID_NOT_FOUND(1004, "Category id not found", HttpStatus.NOT_FOUND),
     ROLE_ID_NOT_FOUND(1004, "Role id not found", HttpStatus.NOT_FOUND),
+    USER_ID_NOT_FOUND(1004, "User id not found", HttpStatus.NOT_FOUND),
     UNCATEGORIZED(6789, "Uncategorized Exception", HttpStatus.INTERNAL_SERVER_ERROR),
     UNAUTHENTICATED(1005, "Unauthenticated", HttpStatus.UNAUTHORIZED);
     int code;

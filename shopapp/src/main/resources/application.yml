@@ -10,12 +10,12 @@ spring:
     driver-class-name: ${DRIVER_NAME}
     username: ${DB_USERNAME}
     password: ${DB_PASS}
-    jpa:
-      properties:
-        hibernate.dialect: ${DIALECT}
-        show-sql: true
-      hibernate:
-        ddl-auto: update
+  jpa:
+    properties:
+      hibernate.dialect: ${DIALECT}
+      show-sql: true
+    hibernate:
+      ddl-auto: update
 server:
   port: ${PORT}
   servlet:
