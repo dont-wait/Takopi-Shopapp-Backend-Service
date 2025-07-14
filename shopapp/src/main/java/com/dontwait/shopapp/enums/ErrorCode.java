@@ -20,6 +20,7 @@ public enum ErrorCode {
     USER_ID_MUST_BE_GREATER_THAN_1(1002, "User id must be greater than 1", HttpStatus.CONFLICT),
     ORDER_ID_MUST_BE_GREATER_THAN_1(1002, "Order id must be greater than 1", HttpStatus.CONFLICT),
     PRODUCT_ID_MUST_BE_GREATER_THAN_1(1002, "Product id must be greater than 1", HttpStatus.CONFLICT),
+    ROLE_MUST_BE_GREATER_THAN_1(1002, "Role must be greater than 1", HttpStatus.CONFLICT),
     PHONE_NUMBER_EXISTED(1002, "Phone number existed", HttpStatus.CONFLICT),
 
     PHONE_NUMBER_CANT_BLANK(1002, "Phone number can't blank", HttpStatus.BAD_REQUEST),

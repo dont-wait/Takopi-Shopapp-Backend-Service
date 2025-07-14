@@ -1,9 +1,6 @@
 package com.dontwait.shopapp.dto.request.user;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -35,5 +32,6 @@ public class UserRegisterRequest {
     Integer facebookAccountId;
     Integer googleAccountId;
     @NotNull(message = "ROLE_CANT_NULL")
+    @Min(value = 1, message = "ROLE_MUST_BE_GREATER_THAN_1")
     Long roleId;
 }
