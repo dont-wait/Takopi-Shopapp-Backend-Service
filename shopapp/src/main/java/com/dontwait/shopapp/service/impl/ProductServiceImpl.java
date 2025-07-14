@@ -108,7 +108,7 @@ public class ProductServiceImpl implements ProductService {
         Category category = categoryRepository.findById(request.getCategoryId())
                 .orElseThrow(() -> new AppException(ErrorCode.CATEGORY_ID_NOT_FOUND));
 
-        productMapper.updateProduct(request, product);
+        productMapper.updateProduct(request, product, category);
         return productMapper.toProductResponse(productRepository.save(product));
     }
 }
