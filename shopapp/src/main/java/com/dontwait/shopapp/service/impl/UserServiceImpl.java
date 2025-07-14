@@ -11,11 +11,13 @@ import com.dontwait.shopapp.mapper.UserMapper;
 import com.dontwait.shopapp.repository.RoleRepository;
 import com.dontwait.shopapp.repository.UserRepository;
 import com.dontwait.shopapp.service.UserService;
+import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -68,16 +70,34 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponse findUserById(Long userId) {
-        return null;
+        User user = userRepository.findByUserId(userId)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_ID_NOT_FOUND));
+
+        return userMapper.toUserResponse(user);
     }
 
     @Override
+    @Transactional
     public void deleteUser(Long userId) {
-
+        User user = userRepository.findByUserId(userId)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_ID_NOT_FOUND));
+        userRepository.deleteByUserId(userId);
     }
 
     @Override
     public UserResponse updateUser(Long userId, UserUpdateRequest request) {
-        return null;
+        User user = userRepository.findByUserId(userId)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_ID_NOT_FOUND));
+        if(userRepository.existsByPhoneNumber(request.getPhoneNumber())) {
+            throw new AppException(ErrorCode.PHONE_NUMBER_EXISTED);
+        }
+        Role role = roleRepository.findByRoleId(request.getRoleId()).
+                orElseThrow(() -> new AppException(ErrorCode.ROLE_ID_NOT_FOUND));
+
+        userMapper.updateUser(request, user, role);
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+
+        userRepository.save(user);
+        return userMapper.toUserResponse(user);
     }
 }
