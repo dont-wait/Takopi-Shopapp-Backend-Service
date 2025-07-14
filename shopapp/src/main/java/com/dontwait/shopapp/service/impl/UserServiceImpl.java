@@ -94,7 +94,7 @@ public class UserServiceImpl implements UserService {
         Role role = roleRepository.findByRoleId(request.getRoleId()).
                 orElseThrow(() -> new AppException(ErrorCode.ROLE_ID_NOT_FOUND));
 
-        userMapper.updateUser(request, user);
+        userMapper.updateUser(request, user, role);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
 
         userRepository.save(user);

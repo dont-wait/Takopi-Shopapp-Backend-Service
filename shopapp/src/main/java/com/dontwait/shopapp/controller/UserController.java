@@ -48,6 +48,14 @@ public class UserController {
                 .build();
     }
 
+    @GetMapping("{userId}")
+    public ApiResponse<UserResponse> getUserById(@PathVariable Long userId) {
+        return ApiResponse.<UserResponse>builder()
+                .message("Get user successfully")
+                .result(userService.findUserById(userId))
+                .build();
+    }
+
     @PutMapping("{userId}")
     public ApiResponse<UserResponse> updateUser(@PathVariable Long userId, @Valid @RequestBody UserUpdateRequest request) {
         return ApiResponse.<UserResponse>builder()
