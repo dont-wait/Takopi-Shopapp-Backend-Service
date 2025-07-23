@@ -25,6 +25,4 @@ public class ProductCreationRequest {
     String productDescription;
     @NotNull(message = "CATEGORY_ID_CANT_NULL")
     Long categoryId;
-
-    List<MultipartFile> files;
 }

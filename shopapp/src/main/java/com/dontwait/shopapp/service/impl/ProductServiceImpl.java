@@ -37,10 +37,10 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductResponse findProductById(Long productId) {
-        Product product = productRepository.findById(productId).
+        Product existingProduct = productRepository.findById(productId).
                 orElseThrow(() -> new AppException(ErrorCode.PRODUCT_ID_NOT_FOUND));
 
-        return productMapper.toProductResponse(product);
+        return productMapper.toProductResponse(existingProduct);
     }
 
     @Override
@@ -67,30 +67,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductResponse createProduct(ProductCreationRequest request) throws IOException {
-        Category category = categoryRepository.findById(request.getCategoryId())
+        Category existingCategory = categoryRepository.findById(request.getCategoryId())
                 .orElseThrow(() -> new AppException(ErrorCode.CATEGORY_ID_NOT_FOUND));
-
-        //Get List Multipart file in request, check if null, init list empty and pass
-        List<MultipartFile> files = Optional.ofNullable(request.getFiles())
-                .orElse(Collections.emptyList());
-
-        //Foreach to save image to /upload
-        for (MultipartFile file : files) {
-            if(file.isEmpty())
-                continue; //pass empty file
-            //Check size
-            if(file.getSize() > 10 * 1024 * 1024)
-                throw new AppException(ErrorCode.FILE_TOO_LARGE);
-            //Check isImage
-            String contentType = file.getContentType();
-            if(contentType == null || !contentType.startsWith("image/"))
-                throw new AppException(ErrorCode.FILE_TYPE_NOT_SUPPORTED);
-
-            String filename = FileUtil.storeFile(file);
-            //TODO: Save file to product_image table
-        }
-
-        Product product = productMapper.toProduct(request, category);
+        Product product = productMapper.toProduct(request, existingCategory);
 
         return productMapper.toProductResponse(productRepository.save(product));
     }
@@ -102,13 +81,13 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductResponse updateProduct(Long productId, ProductUpdateRequest request) {
-        Product product = productRepository.findById(productId)
+        Product existingProduct = productRepository.findById(productId)
                 .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_ID_NOT_FOUND));
 
-        Category category = categoryRepository.findById(request.getCategoryId())
+        Category existingCategory = categoryRepository.findById(request.getCategoryId())
                 .orElseThrow(() -> new AppException(ErrorCode.CATEGORY_ID_NOT_FOUND));
 
-        productMapper.updateProduct(request, product, category);
-        return productMapper.toProductResponse(productRepository.save(product));
+        productMapper.updateProduct(request, existingProduct, existingCategory);
+        return productMapper.toProductResponse(productRepository.save(existingProduct));
     }
 }
