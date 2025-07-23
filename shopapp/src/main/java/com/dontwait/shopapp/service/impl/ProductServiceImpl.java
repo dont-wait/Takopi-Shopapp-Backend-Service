@@ -1,7 +1,9 @@
 package com.dontwait.shopapp.service.impl;
 
 import com.dontwait.shopapp.dto.request.product.ProductCreationRequest;
+import com.dontwait.shopapp.dto.request.product.ProductImageRequest;
 import com.dontwait.shopapp.dto.request.product.ProductUpdateRequest;
+import com.dontwait.shopapp.dto.response.ProductImageResponse;
 import com.dontwait.shopapp.dto.response.ProductResponse;
 import com.dontwait.shopapp.entity.Category;
 import com.dontwait.shopapp.entity.Product;
@@ -72,6 +74,11 @@ public class ProductServiceImpl implements ProductService {
         Product product = productMapper.toProduct(request, existingCategory);
 
         return productMapper.toProductResponse(productRepository.save(product));
+    }
+
+    @Override
+    public ProductImageResponse createProductImage(Long productId, ProductImageRequest request) {
+        return null;
     }
 
     @Override
