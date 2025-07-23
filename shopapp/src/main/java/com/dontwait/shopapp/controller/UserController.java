@@ -1,6 +1,7 @@
 package com.dontwait.shopapp.controller;
 
 import com.dontwait.shopapp.dto.request.user.UserRegisterRequest;
+import com.dontwait.shopapp.dto.request.user.UserUpdateRequest;
 import com.dontwait.shopapp.dto.response.ApiResponse;
 import com.dontwait.shopapp.dto.response.UserResponse;
 import com.dontwait.shopapp.service.UserService;
@@ -44,6 +45,30 @@ public class UserController {
         return ApiResponse.<List<UserResponse>>builder()
                 .message("Get all users successfully")
                 .result(userService.findAllUsers(pageable, keyword, roleId))
+                .build();
+    }
+
+    @GetMapping("{userId}")
+    public ApiResponse<UserResponse> getUserById(@PathVariable Long userId) {
+        return ApiResponse.<UserResponse>builder()
+                .message("Get user successfully")
+                .result(userService.findUserById(userId))
+                .build();
+    }
+
+    @PutMapping("{userId}")
+    public ApiResponse<UserResponse> updateUser(@PathVariable Long userId,  @RequestBody @Valid UserUpdateRequest request) {
+        return ApiResponse.<UserResponse>builder()
+                .message("Update user successfully")
+                .result(userService.updateUser(userId, request))
+                .build();
+    }
+
+    @DeleteMapping("{userId}")
+    public ApiResponse<String> deleteUser(@PathVariable Long userId) {
+        userService.deleteUser(userId);
+        return ApiResponse.<String>builder()
+                .message("Delete user successfully")
                 .build();
     }
 }

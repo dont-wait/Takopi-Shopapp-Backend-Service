@@ -20,6 +20,7 @@ public enum ErrorCode {
     USER_ID_MUST_BE_GREATER_THAN_1(1002, "User id must be greater than 1", HttpStatus.CONFLICT),
     ORDER_ID_MUST_BE_GREATER_THAN_1(1002, "Order id must be greater than 1", HttpStatus.CONFLICT),
     PRODUCT_ID_MUST_BE_GREATER_THAN_1(1002, "Product id must be greater than 1", HttpStatus.CONFLICT),
+    ROLE_MUST_BE_GREATER_THAN_1(1002, "Role must be greater than 1", HttpStatus.CONFLICT),
     PHONE_NUMBER_EXISTED(1002, "Phone number existed", HttpStatus.CONFLICT),
 
     PHONE_NUMBER_CANT_BLANK(1002, "Phone number can't blank", HttpStatus.BAD_REQUEST),
@@ -37,9 +38,12 @@ public enum ErrorCode {
     CATEGORY_NAME_EXISTED(1003, "Category name existed", HttpStatus.CONFLICT),
 
     PRODUCT_ID_NOT_FOUND(1004, "Product id not found", HttpStatus.NOT_FOUND),
+    FULLNAME_NOT_FOUND(1004, "Full name not found", HttpStatus.NOT_FOUND),
     CATEGORY_ID_NOT_FOUND(1004, "Category id not found", HttpStatus.NOT_FOUND),
     ROLE_ID_NOT_FOUND(1004, "Role id not found", HttpStatus.NOT_FOUND),
-    UNCATEGORIZED(6789, "Uncategorized Exception", HttpStatus.INTERNAL_SERVER_ERROR);
+    USER_ID_NOT_FOUND(1004, "User id not found", HttpStatus.NOT_FOUND),
+    UNCATEGORIZED(6789, "Uncategorized Exception", HttpStatus.INTERNAL_SERVER_ERROR),
+    UNAUTHENTICATED(1005, "Unauthenticated", HttpStatus.UNAUTHORIZED);
     int code;
     String message;
     HttpStatus httpStatus;

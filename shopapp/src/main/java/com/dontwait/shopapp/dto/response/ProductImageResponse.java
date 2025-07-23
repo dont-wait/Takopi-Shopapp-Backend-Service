@@ -1,4 +1,4 @@
-package com.dontwait.shopapp.dto.request.user;
+package com.dontwait.shopapp.dto.response;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -10,9 +10,8 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-//TODO: Implement in AuthenticateController
-public class UserLoginRequest {
-    String fullName;
-    String password;
-    String rePassword;
+public class ProductImageResponse {
+    Long productImageId;
+    Long productId;
+    String imageURL;
 }

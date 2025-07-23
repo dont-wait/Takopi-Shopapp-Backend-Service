@@ -5,9 +5,7 @@ import com.dontwait.shopapp.dto.request.product.ProductUpdateRequest;
 import com.dontwait.shopapp.dto.response.ProductResponse;
 import com.dontwait.shopapp.entity.Category;
 import com.dontwait.shopapp.entity.Product;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
+import org.mapstruct.*;
 
 @Mapper(componentModel = "spring")
 public interface ProductMapper {
@@ -16,5 +14,9 @@ public interface ProductMapper {
     @Mapping(target = "productCategory", source = "category.categoryName")
     ProductResponse toProductResponse(Product product);
 
-    void updateProduct(ProductUpdateRequest request, @MappingTarget Product product);
+    @BeanMapping(ignoreByDefault = true,
+    nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE
+    )
+    @Mapping(target = "category")
+    void updateProduct(ProductUpdateRequest request, @MappingTarget Product product, Category category);
 }
