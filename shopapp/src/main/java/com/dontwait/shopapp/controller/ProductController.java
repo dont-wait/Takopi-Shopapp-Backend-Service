@@ -4,7 +4,10 @@ import com.dontwait.shopapp.dto.request.product.ProductCreationRequest;
 import com.dontwait.shopapp.dto.request.product.ProductUpdateRequest;
 import com.dontwait.shopapp.dto.response.ApiResponse;
 import com.dontwait.shopapp.dto.response.ProductResponse;
+import com.dontwait.shopapp.enums.ErrorCode;
+import com.dontwait.shopapp.exception.AppException;
 import com.dontwait.shopapp.service.ProductService;
+import com.dontwait.shopapp.util.FileUtil;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -14,9 +17,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -48,13 +54,38 @@ public class ProductController {
                 .build();
     }
 
-    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ApiResponse<ProductResponse> createProduct(@Valid @ModelAttribute ProductCreationRequest request) throws IOException {
+    @PostMapping()
+    public ApiResponse<ProductResponse> createProduct(@Valid @RequestBody ProductCreationRequest request) throws IOException {
         return ApiResponse.<ProductResponse>builder()
                 .result(productService.createProduct(request))
                 .message("Create product successfully")
                 .build();
     }
+
+    @PostMapping(value = "/uploads/{productId}",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ApiResponse<?> uploadImages(@PathVariable Long productId,
+                                       @ModelAttribute("files")List<MultipartFile> files) throws IOException {
+
+        files = files == null ? Collections.emptyList() : files;
+        //Foreach to save image to /upload
+        for (MultipartFile file : files) {
+            if(file.isEmpty())
+                continue; //pass emptyfile
+            //Check size
+            if(file.getSize() > 10 * 1024 * 1024)
+                throw new AppException(ErrorCode.FILE_TOO_LARGE);
+            //Check isImage
+            String contentType = file.getContentType();
+            if(contentType == null || !contentType.startsWith("image/"))
+                throw new AppException(ErrorCode.FILE_TYPE_NOT_SUPPORTED);
+
+            String filename = FileUtil.storeFile(file);
+            //TODO: Save file to product_image table
+        }
+        return null;
+    }
+
 
     @PutMapping("{productId}")
     public ApiResponse<ProductResponse> updateProduct( @PathVariable Long productId, @Valid @RequestBody ProductUpdateRequest request) {
