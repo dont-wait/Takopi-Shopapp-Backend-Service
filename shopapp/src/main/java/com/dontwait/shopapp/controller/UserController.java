@@ -35,7 +35,7 @@ public class UserController {
     @GetMapping
     public ApiResponse<List<UserResponse>> getUsers(@RequestParam(name = "page", defaultValue = "0") Integer page,
                                                     @RequestParam(name = "limit", defaultValue = "10") Integer limit,
-                                                    @RequestParam(name = "sort", defaultValue = "fullName") String sort,
+                                                    @RequestParam(name = "sort", defaultValue = "userId") String sort,
                                                     @RequestParam(name = "order", defaultValue = "asc") String order,
                                                     @RequestParam(required = false) String keyword,
                                                     @RequestParam(required = false) Integer roleId) {
