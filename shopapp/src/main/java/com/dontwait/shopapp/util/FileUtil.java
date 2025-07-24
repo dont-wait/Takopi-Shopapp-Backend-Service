@@ -13,6 +13,15 @@ import java.util.UUID;
 
 public class FileUtil {
 
+    public static void deleteFile(String fileName) {
+        try{
+            Path path = Paths.get("uploads").resolve(fileName);
+            Files.deleteIfExists(path);
+        }catch (IOException e){
+            System.out.println("Error delete file: " + e.getMessage());
+        }
+    }
+
     public static String storeFile(MultipartFile file) throws IOException {
         if(!isImageFile(file) || file.getOriginalFilename() == null)
             throw new IOException("Invalid image format");

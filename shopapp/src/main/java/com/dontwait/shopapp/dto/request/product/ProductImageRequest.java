@@ -16,5 +16,5 @@ public class ProductImageRequest {
     private Long productId;
 
     @Size(min = 5, max = 200, message = "Image's name")
-    private String imageUrl;
+    private String imageURL;
 }
