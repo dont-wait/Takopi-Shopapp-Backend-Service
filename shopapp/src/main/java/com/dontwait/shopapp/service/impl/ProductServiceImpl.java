@@ -90,9 +90,15 @@ public class ProductServiceImpl implements ProductService {
         int size = productImageRepository.findByProductProductId(productId).size();
         if(size >= 5)
             throw new AppException(ErrorCode.SIZE_OF_PRODUCT_IMAGES_CANNOT_GREATER_THAN_5);
-        ProductImage newProductImage = productImageMapper.toProductImage(request);
-
+        ProductImage newProductImage = productImageMapper.toProductImage(request, existingProduct);
+        ;
         return productImageMapper.toProductImageResponse(productImageRepository.save(newProductImage));
+    }
+
+    @Override
+    public Product getProductById(Long productId) {
+        return productRepository.findById(productId)
+                .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_ID_NOT_FOUND));
     }
 
     @Override

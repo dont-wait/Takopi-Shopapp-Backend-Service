@@ -1,10 +1,12 @@
 package com.dontwait.shopapp.controller;
 
 import com.dontwait.shopapp.dto.request.product.ProductCreationRequest;
+import com.dontwait.shopapp.dto.request.product.ProductImageRequest;
 import com.dontwait.shopapp.dto.request.product.ProductUpdateRequest;
 import com.dontwait.shopapp.dto.response.ApiResponse;
 import com.dontwait.shopapp.dto.response.ProductImageResponse;
 import com.dontwait.shopapp.dto.response.ProductResponse;
+import com.dontwait.shopapp.entity.Product;
 import com.dontwait.shopapp.enums.ErrorCode;
 import com.dontwait.shopapp.exception.AppException;
 import com.dontwait.shopapp.service.ProductService;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -65,10 +68,14 @@ public class ProductController {
 
     @PostMapping(value = "/uploads/{productId}",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ApiResponse<ProductImageResponse> uploadImages(@PathVariable Long productId,
+    public ApiResponse<List<ProductImageResponse>> uploadImages(@PathVariable Long productId,
                                                           @ModelAttribute("files")List<MultipartFile> files) throws IOException {
 
+        //Check product
+        //If Existed, can add productImage
+        Product existingProduct = productService.getProductById(productId);
         files = files == null ? Collections.emptyList() : files;
+        List<ProductImageResponse> newProductImagesResponse = new ArrayList<>();
         //Foreach to save image to /upload
         for (MultipartFile file : files) {
             if(file.isEmpty())
@@ -80,11 +87,21 @@ public class ProductController {
             String contentType = file.getContentType();
             if(contentType == null || !contentType.startsWith("image/"))
                 throw new AppException(ErrorCode.FILE_TYPE_NOT_SUPPORTED);
-
             String filename = FileUtil.storeFile(file);
+
             //TODO: Save file to product_image table
+            ProductImageRequest productImageRequest = ProductImageRequest
+                    .builder()
+                    .productId(existingProduct.getProductId())
+                    .imageURL(filename)
+                    .build();
+            newProductImagesResponse.add(productService.createProductImage(productId, productImageRequest));
         }
-        return null;
+
+        return ApiResponse.<List<ProductImageResponse>>builder()
+                .result(newProductImagesResponse)
+                .message("Upload product images successfully")
+                .build();
     }
 
 
