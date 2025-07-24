@@ -12,6 +12,7 @@ import lombok.experimental.FieldDefaults;
 @Table(name = "product_images")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
+@ToString
 public class ProductImage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -22,6 +22,9 @@ public enum ErrorCode {
     PRODUCT_ID_MUST_BE_GREATER_THAN_1(1002, "Product id must be greater than 1", HttpStatus.CONFLICT),
     ROLE_MUST_BE_GREATER_THAN_1(1002, "Role must be greater than 1", HttpStatus.CONFLICT),
     PHONE_NUMBER_EXISTED(1002, "Phone number existed", HttpStatus.CONFLICT),
+    SIZE_OF_PRODUCT_IMAGES_CANNOT_GREATER_THAN_5(1002, "Size of product images cannot greater than 5", HttpStatus.CONFLICT),
+    FULLNAME_CANT_BLANK(1002, "Full name can't blank", HttpStatus.BAD_REQUEST),
+    USERNAME_CANT_BLANK(1002, "Username can't blank", HttpStatus.BAD_REQUEST),
 
     PHONE_NUMBER_CANT_BLANK(1002, "Phone number can't blank", HttpStatus.BAD_REQUEST),
     PHONE_NUMBER_MUST_BE_10_DIGIT(1002, "Phone number must be 10 digit", HttpStatus.BAD_REQUEST),
