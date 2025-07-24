@@ -3,6 +3,7 @@ package com.dontwait.shopapp.service.impl;
 import com.dontwait.shopapp.dto.request.product.ProductCreationRequest;
 import com.dontwait.shopapp.dto.request.product.ProductImageRequest;
 import com.dontwait.shopapp.dto.request.product.ProductUpdateRequest;
+import com.dontwait.shopapp.dto.response.ApiResponse;
 import com.dontwait.shopapp.dto.response.ProductImageResponse;
 import com.dontwait.shopapp.dto.response.ProductResponse;
 import com.dontwait.shopapp.entity.Category;
@@ -26,10 +27,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -82,14 +80,61 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductImageResponse createProductImage(Long productId, ProductImageRequest request) {
+    public List<ProductImageResponse> uploadImages(Long productId, List<MultipartFile> files) throws IOException {
+        files = files == null ? Collections.emptyList() : files;
+
+
         Product existingProduct = productRepository.findById(productId)
                 .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_ID_NOT_FOUND));
-
-        //If size >= 5, cancel process
-        int size = productImageRepository.findByProductProductId(productId).size();
-        if(size >= 5)
+        int currentSize = productImageRepository.findByProductProductId(productId).size();
+        if(currentSize + files.size() > 5)
             throw new AppException(ErrorCode.SIZE_OF_PRODUCT_IMAGES_CANNOT_GREATER_THAN_5);
+
+        //Validate before add to db
+        //If invalid file, stop process
+        for(MultipartFile file : files) {
+            if(file.isEmpty())
+                continue;
+            if(file.getSize() > 10 * 1024 * 1024)
+                throw new AppException(ErrorCode.FILE_TOO_LARGE);
+            String contentType = file.getContentType();
+            if(contentType == null || !contentType.startsWith("image/"))
+                throw new AppException(ErrorCode.FILE_TYPE_NOT_SUPPORTED);
+        }
+
+        List<ProductImageResponse> newProductImagesResponse = new ArrayList<>();
+        List<String> savedFiles = new ArrayList<>(); //Neu fail thi remove het hinh vua luu ra khoi local
+        //Chi luu khi tat ca deu valid
+
+        //Save to local and db
+        try{
+            for(MultipartFile file : files) {
+                String filename = FileUtil.storeFile(file);
+                savedFiles.add(filename);
+
+                ProductImageRequest request = ProductImageRequest.builder()
+                        .productId(productId)
+                        .imageURL(filename)
+                        .build();
+
+                ProductImageResponse response = createProductImage(productId, request);
+                newProductImagesResponse.add(response);
+            }
+            return newProductImagesResponse;
+        }catch (Exception e) {
+            for(String filename : savedFiles)
+                FileUtil.deleteFile(filename);
+            throw e;
+        }
+    }
+
+
+    @Override
+    public ProductImageResponse createProductImage(Long productId, ProductImageRequest request) {
+
+        Product existingProduct = productRepository.findByProductId(productId)
+                .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_ID_NOT_FOUND));
+
         ProductImage newProductImage = productImageMapper.toProductImage(request, existingProduct);
         ;
         return productImageMapper.toProductImageResponse(productImageRepository.save(newProductImage));

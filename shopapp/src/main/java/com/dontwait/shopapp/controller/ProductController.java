@@ -70,36 +70,9 @@ public class ProductController {
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ApiResponse<List<ProductImageResponse>> uploadImages(@PathVariable Long productId,
                                                           @ModelAttribute("files")List<MultipartFile> files) throws IOException {
-
-        //Check product
-        //If Existed, can add productImage
-        Product existingProduct = productService.getProductById(productId);
-        files = files == null ? Collections.emptyList() : files;
-        List<ProductImageResponse> newProductImagesResponse = new ArrayList<>();
-        //Foreach to save image to /upload
-        for (MultipartFile file : files) {
-            if(file.isEmpty())
-                continue; //pass empty file
-            //Check size
-            if(file.getSize() > 10 * 1024 * 1024)
-                throw new AppException(ErrorCode.FILE_TOO_LARGE);
-            //Check isImage
-            String contentType = file.getContentType();
-            if(contentType == null || !contentType.startsWith("image/"))
-                throw new AppException(ErrorCode.FILE_TYPE_NOT_SUPPORTED);
-            String filename = FileUtil.storeFile(file);
-
-            //TODO: Save file to product_image table
-            ProductImageRequest productImageRequest = ProductImageRequest
-                    .builder()
-                    .productId(existingProduct.getProductId())
-                    .imageURL(filename)
-                    .build();
-            newProductImagesResponse.add(productService.createProductImage(productId, productImageRequest));
-        }
-
+        List<ProductImageResponse> productImageResponses = productService.uploadImages(productId, files);
         return ApiResponse.<List<ProductImageResponse>>builder()
-                .result(newProductImagesResponse)
+                .result(productImageResponses)
                 .message("Upload product images successfully")
                 .build();
     }
