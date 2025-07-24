@@ -18,4 +18,5 @@ public class UserResponse {
     Integer facebookAccountId;
     Integer googleAccountId;
     String userRole;
+    Integer isActive;
 }

@@ -64,24 +64,28 @@ public class UserServiceImpl implements UserService {
         }
 
         return userRepository.findAll(spec, pageable).stream()
+                .filter(userResponse -> userResponse.getIsActive() == 1)
                 .map(userMapper::toUserResponse)
                 .toList();
     }
 
     @Override
     public UserResponse findUserById(Long userId) {
-        User user = userRepository.findByUserId(userId)
+        User existingUser = userRepository.findByUserId(userId)
+                .filter(userResponse -> userResponse.getIsActive() == 1)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_ID_NOT_FOUND));
 
-        return userMapper.toUserResponse(user);
+        return userMapper.toUserResponse(existingUser);
     }
 
     @Override
     @Transactional
     public void deleteUser(Long userId) {
-        User user = userRepository.findByUserId(userId)
+        User existingUser = userRepository.findByUserId(userId)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_ID_NOT_FOUND));
-        userRepository.deleteByUserId(userId);
+        //TODO: softly delete
+        existingUser.setIsActive(0);
+        userRepository.save(existingUser);
     }
 
     @Override

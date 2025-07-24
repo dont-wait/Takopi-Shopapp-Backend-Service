@@ -18,4 +18,5 @@ public class ProductResponse {
     String productThumbnail;
     String productDescription;
     String productCategory;
+    Integer isActive;
 }
