@@ -84,7 +84,6 @@ public class ProductServiceImpl implements ProductService {
     public List<ProductImageResponse> uploadImages(Long productId, List<MultipartFile> files) throws IOException {
         files = files == null ? Collections.emptyList() : files;
 
-
         Product existingProduct = productRepository.findById(productId)
                 .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_ID_NOT_FOUND));
         int currentSize = productImageRepository.findByProductProductId(productId).size();
