@@ -47,7 +47,7 @@ public class ProductController {
                                                       @RequestParam(name = "limit", defaultValue = "20") Integer limit,
                                                       @RequestParam(name = "keyword", required = false) String keyword,
                                                       @RequestParam(name = "categoryId", required = false) Long categoryId,
-                                                      @RequestParam(name = "sort", defaultValue = "productName") String sort,
+                                                      @RequestParam(name = "sort", defaultValue = "productId") String sort,
                                                       @RequestParam(name = "order", defaultValue = "asc") String order) {
         Sort.Direction direction = order.equalsIgnoreCase(("asc")) ? Sort.Direction.ASC : Sort.Direction.DESC;
         Pageable pageable = PageRequest.of(page, limit, Sort.by(direction, sort));

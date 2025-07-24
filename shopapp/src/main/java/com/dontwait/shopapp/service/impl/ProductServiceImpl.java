@@ -42,9 +42,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductResponse findProductById(Long productId) {
-        Product existingProduct = productRepository.findById(productId).
-                orElseThrow(() -> new AppException(ErrorCode.PRODUCT_ID_NOT_FOUND));
-
+        Product existingProduct = productRepository.findById(productId)
+                .filter(product -> product.getIsActive() == 1)
+                .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_ID_NOT_FOUND));
         return productMapper.toProductResponse(existingProduct);
     }
 
@@ -67,6 +67,7 @@ public class ProductServiceImpl implements ProductService {
 
         return productRepository.findAll(spec, pageable).stream()
                 .map(productMapper::toProductResponse)
+                .filter(productResponse -> productResponse.getIsActive() == 1)
                 .toList();
     }
 
@@ -148,7 +149,10 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void deleteProduct(Long productId) {
-        productRepository.deleteById(productId);
+        Product existingProduct = productRepository.findByProductId(productId)
+                        .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_ID_NOT_FOUND));
+        existingProduct.setIsActive(0);
+        productRepository.save(existingProduct);
     }
 
     @Override

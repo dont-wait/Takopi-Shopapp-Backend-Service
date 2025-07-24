@@ -38,4 +38,7 @@ public class Product extends BaseEntity{
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     List<ProductImage> productImages;
+
+    @Column(name = "is_active", columnDefinition = "TINYINT(1)")
+    Integer isActive;
 }
