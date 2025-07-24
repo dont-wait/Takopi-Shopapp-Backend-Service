@@ -3,6 +3,7 @@ package com.dontwait.shopapp.controller;
 import com.dontwait.shopapp.dto.request.product.ProductCreationRequest;
 import com.dontwait.shopapp.dto.request.product.ProductUpdateRequest;
 import com.dontwait.shopapp.dto.response.ApiResponse;
+import com.dontwait.shopapp.dto.response.ProductImageResponse;
 import com.dontwait.shopapp.dto.response.ProductResponse;
 import com.dontwait.shopapp.enums.ErrorCode;
 import com.dontwait.shopapp.exception.AppException;
@@ -64,14 +65,14 @@ public class ProductController {
 
     @PostMapping(value = "/uploads/{productId}",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ApiResponse<?> uploadImages(@PathVariable Long productId,
-                                       @ModelAttribute("files")List<MultipartFile> files) throws IOException {
+    public ApiResponse<ProductImageResponse> uploadImages(@PathVariable Long productId,
+                                                          @ModelAttribute("files")List<MultipartFile> files) throws IOException {
 
         files = files == null ? Collections.emptyList() : files;
         //Foreach to save image to /upload
         for (MultipartFile file : files) {
             if(file.isEmpty())
-                continue; //pass emptyfile
+                continue; //pass empty file
             //Check size
             if(file.getSize() > 10 * 1024 * 1024)
                 throw new AppException(ErrorCode.FILE_TOO_LARGE);

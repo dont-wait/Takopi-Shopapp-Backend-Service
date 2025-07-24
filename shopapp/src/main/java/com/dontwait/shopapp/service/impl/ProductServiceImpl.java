@@ -7,10 +7,13 @@ import com.dontwait.shopapp.dto.response.ProductImageResponse;
 import com.dontwait.shopapp.dto.response.ProductResponse;
 import com.dontwait.shopapp.entity.Category;
 import com.dontwait.shopapp.entity.Product;
+import com.dontwait.shopapp.entity.ProductImage;
 import com.dontwait.shopapp.enums.ErrorCode;
 import com.dontwait.shopapp.exception.AppException;
+import com.dontwait.shopapp.mapper.ProductImageMapper;
 import com.dontwait.shopapp.mapper.ProductMapper;
 import com.dontwait.shopapp.repository.CategoryRepository;
+import com.dontwait.shopapp.repository.ProductImageRepository;
 import com.dontwait.shopapp.repository.ProductRepository;
 import com.dontwait.shopapp.service.ProductService;
 import com.dontwait.shopapp.util.FileUtil;
@@ -34,7 +37,9 @@ import java.util.Optional;
 public class ProductServiceImpl implements ProductService {
 
     ProductMapper productMapper;
+    ProductImageMapper productImageMapper;
     ProductRepository productRepository;
+    ProductImageRepository productImageRepository;
     CategoryRepository categoryRepository;
 
     @Override
@@ -78,7 +83,16 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductImageResponse createProductImage(Long productId, ProductImageRequest request) {
-        return null;
+        Product existingProduct = productRepository.findById(productId)
+                .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_ID_NOT_FOUND));
+
+        //If size >= 5, cancel process
+        int size = productImageRepository.findByProductProductId(productId).size();
+        if(size >= 5)
+            throw new AppException(ErrorCode.SIZE_OF_PRODUCT_IMAGES_CANNOT_GREATER_THAN_5);
+        ProductImage newProductImage = productImageMapper.toProductImage(request);
+
+        return productImageMapper.toProductImageResponse(productImageRepository.save(newProductImage));
     }
 
     @Override

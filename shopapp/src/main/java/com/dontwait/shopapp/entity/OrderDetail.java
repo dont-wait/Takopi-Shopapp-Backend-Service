@@ -27,9 +27,12 @@ public class OrderDetail {
 
     @Column(name = "price", nullable = false)
     BigDecimal price;
+
     @Column(name = "number_of_products", nullable = false)
     Integer numberOfProducts;
+
     @Column(name = "total_money", nullable = false)
     BigDecimal totalMoney;
+
     String color;
 }
