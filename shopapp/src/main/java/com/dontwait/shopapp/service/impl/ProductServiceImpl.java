@@ -87,7 +87,7 @@ public class ProductServiceImpl implements ProductService {
         Product existingProduct = productRepository.findById(productId)
                 .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_ID_NOT_FOUND));
         int currentSize = productImageRepository.findByProductProductId(productId).size();
-        if(currentSize + files.size() > 5)
+        if(currentSize + files.size() > ProductImage.MAXIMUM_IMAGE_SIZE_PER_PRODUCT)
             throw new AppException(ErrorCode.SIZE_OF_PRODUCT_IMAGES_CANNOT_GREATER_THAN_5);
 
         //Validate before add to db

@@ -14,6 +14,7 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @ToString
 public class ProductImage {
+    public static final int MAXIMUM_IMAGE_SIZE_PER_PRODUCT = 5;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "product_images_id")
