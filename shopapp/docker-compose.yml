@@ -1,0 +1,70 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: ecommerce_postgres
+    restart: no
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-ecommerce_db}
+      POSTGRES_USER: ${POSTGRES_USER:-sa}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-sa123}
+      PGDATA: /var/lib/postgresql/data/pgdata
+      TZ: Asia/Ho_Chi_Minh
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    networks:
+      - ecommerce_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-sa} -d ${POSTGRES_DB:-ecommerce_db}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  liquibase:
+    image: liquibase/liquibase:5.0.1
+    container_name: ecommerce_liquibase
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./src/main/resources/db/changelog:/liquibase/changelog
+      - ~/.m2/repository/org/postgresql/postgresql/42.7.9/postgresql-42.7.9.jar:/liquibase/lib/postgresql.jar
+    working_dir: /liquibase
+    networks:
+      - ecommerce_network
+    entrypoint:
+      - liquibase
+      - --search-path=/liquibase/changelog
+      - --changelog-file=db.changelog-master.yml
+      - --url=jdbc:postgresql://postgres:5432/${POSTGRES_DB:-ecommerce_db}
+      - --username=${POSTGRES_USER:-sa}
+      - --password=${POSTGRES_PASSWORD:-sa123} 
+
+  redis:
+      image: redis:8-alpine
+      container_name: ecommerce_redis
+      command: ["redis-server", "--requirepass", "${REDIS_PASSWORD:-redis123}"]
+      restart: no
+      ports:
+        - "${REDIS_PORT:-6379}:6379"
+      volumes:
+        - redis_data:/data
+      networks:
+        - ecommerce_network
+      healthcheck:
+        test: ["CMD", "redis-cli", "a", "${REDIS_PASSWORD:-redis123}", "ping"]
+        interval: 10s
+        timeout: 5s
+        retries: 5
+        start_period: 5s
+volumes:
+  pg_data:
+    driver: local
+  redis_data:
+    driver: local
+
+networks:
+  ecommerce_network:
+    driver: bridge
