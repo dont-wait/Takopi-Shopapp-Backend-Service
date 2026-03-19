@@ -1,70 +1,69 @@
 services:
-  postgres:
-    image: postgres:16-alpine
-    container_name: ecommerce_postgres
+  mysql:
+    image: mysql:8.0
+    container_name: shopapp_mysql
     restart: no
     environment:
-      POSTGRES_DB: ${POSTGRES_DB:-ecommerce_db}
-      POSTGRES_USER: ${POSTGRES_USER:-sa}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-sa123}
-      PGDATA: /var/lib/postgresql/data/pgdata
+      MYSQL_DATABASE: ${MYSQL_DB:-shopapp}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD:-sa123}
       TZ: Asia/Ho_Chi_Minh
     ports:
-      - "${POSTGRES_PORT:-5432}:5432"
+      - "${MYSQL_PORT:-3306}:3306"
     volumes:
-      - pg_data:/var/lib/postgresql/data
+      - mysql_data:/var/lib/mysql
     networks:
-      - ecommerce_network
+      - shopapp_network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-sa} -d ${POSTGRES_DB:-ecommerce_db}"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-p${MYSQL_PASSWORD:-sa123}"]
       interval: 10s
       timeout: 5s
       retries: 5
-      start_period: 10s
+      start_period: 20s
 
   liquibase:
     image: liquibase/liquibase:5.0.1
-    container_name: ecommerce_liquibase
+    container_name: shopapp_liquibase
     depends_on:
-      postgres:
+      mysql:
         condition: service_healthy
     volumes:
       - ./src/main/resources/db/changelog:/liquibase/changelog
-      - ~/.m2/repository/org/postgresql/postgresql/42.7.9/postgresql-42.7.9.jar:/liquibase/lib/postgresql.jar
+      - ~/.m2/repository/com/mysql/mysql-connector-j/8.0.33/mysql-connector-j-8.0.33.jar:/liquibase/lib/mysql.jar
     working_dir: /liquibase
     networks:
-      - ecommerce_network
+      - shopapp_network
     entrypoint:
       - liquibase
       - --search-path=/liquibase/changelog
       - --changelog-file=db.changelog-master.yml
-      - --url=jdbc:postgresql://postgres:5432/${POSTGRES_DB:-ecommerce_db}
-      - --username=${POSTGRES_USER:-sa}
-      - --password=${POSTGRES_PASSWORD:-sa123} 
+      - --url=jdbc:mysql://mysql:3306/${MYSQL_DB:-shopapp}
+      - --username=${DB_USERNAME:-root}
+      - --password=${MYSQL_PASSWORD:-sa123}
 
   redis:
-      image: redis:8-alpine
-      container_name: ecommerce_redis
-      command: ["redis-server", "--requirepass", "${REDIS_PASSWORD:-redis123}"]
-      restart: no
-      ports:
-        - "${REDIS_PORT:-6379}:6379"
-      volumes:
-        - redis_data:/data
-      networks:
-        - ecommerce_network
-      healthcheck:
-        test: ["CMD", "redis-cli", "a", "${REDIS_PASSWORD:-redis123}", "ping"]
-        interval: 10s
-        timeout: 5s
-        retries: 5
-        start_period: 5s
+    image: redis:8-alpine
+    container_name: shopapp_redis
+    command: ["redis-server", "--requirepass", "${REDIS_PASSWORD:-redis123}"]
+    restart: no
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - shopapp_network
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD:-redis123}", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+
 volumes:
-  pg_data:
+  mysql_data:
     driver: local
   redis_data:
     driver: local
 
 networks:
-  ecommerce_network:
+  shopapp_network:
     driver: bridge

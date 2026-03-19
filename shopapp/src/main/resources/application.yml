@@ -10,6 +10,9 @@ spring:
     driver-class-name: ${DRIVER_NAME}
     username: ${DB_USERNAME}
     password: ${DB_PASS}
+  liquibase:
+    enable: true
+    change-log: classpath:db/changelog/db.changelog-master.yml
   jpa:
     properties:
       hibernate.dialect: ${DIALECT}
